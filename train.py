@@ -38,3 +38,5 @@ s3.upload_file(
 )
 
 print("Training completed and model uploaded to S3")
+
+# test pipeline
