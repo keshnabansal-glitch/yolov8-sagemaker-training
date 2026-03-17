@@ -29,7 +29,7 @@ model.train(
 s3 = boto3.client('s3')
 s3.upload_file(
     "runs/detect/train/weights/best.pt",
-    "your-s3-bucket-name",
+    "yolov8-trained-model",
     "models/best.pt"
 )
 
