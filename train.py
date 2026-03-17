@@ -8,12 +8,9 @@ from ultralytics import YOLO
 import boto3
 
 # Download dataset from Roboflow
-rf = Roboflow(api_key="YOUR_API_KEY")
-
-project = rf.workspace("workspace_name").project("project_name")
-
+rf = Roboflow(api_key="ROBOFLOW_API_KEY")
+project = rf.workspace("perception-models").project("tata_ace_exterior")
 version = project.version(2)
-
 dataset = version.download("yolov8")
 
 # Load YOLOv8 model
@@ -30,7 +27,6 @@ model.train(
 
 # Upload trained model to S3
 s3 = boto3.client('s3')
-
 s3.upload_file(
     "runs/detect/train/weights/best.pt",
     "your-s3-bucket-name",
