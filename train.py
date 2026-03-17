@@ -29,7 +29,7 @@ model.train(
 # Upload trained model to S3
 s3 = boto3.client('s3')
 # Get correct path dynamically
-best_model_path = model.trainer.save_dir + "/weights/best.pt"
+best_model_path = str(model.trainer.save_dir / "weights/best.pt")
 print("Model saved at:", best_model_path)
 s3.upload_file(
     best_model_path,
