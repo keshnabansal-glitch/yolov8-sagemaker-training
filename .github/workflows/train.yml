@@ -1,14 +1,15 @@
 # Whenever code is pushed to GitHub → GitHub runs this pipeline → raining script runs automatically
-
 name: YOLOv8 Training Pipeline
 
 on:
   push:
     branches:
       - main
+
 jobs:
   train-model:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -30,5 +31,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Run training script
+        env:
+          ROBOFLOW_API_KEY: ${{ secrets.ROBOFLOW_API_KEY }}
         run: |
           python train.py
