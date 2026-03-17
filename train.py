@@ -3,13 +3,12 @@
 # ii) YOLOv8 training
 # iii) Upload trained model to S3 
 
-
 from roboflow import Roboflow
 from ultralytics import YOLO
 import boto3
 import os
 
-# Download dataset from Roboflow
+# Get API key from environment (passed from GitHub)
 rf = Roboflow(api_key=os.environ["ROBOFLOW_API_KEY"])
 project = rf.workspace("perception-models").project("tata_ace_exterior")
 version = project.version(2)
