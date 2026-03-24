@@ -1,0 +1,42 @@
+# This script performs:
+# i) Dataset download from Roboflow
+# ii) YOLOv8 training
+# iii) Upload trained model to S3 
+
+from roboflow import Roboflow
+from ultralytics import YOLO
+import boto3
+import os
+
+# Get API key from environment (passed from GitHub)
+rf = Roboflow(api_key=os.environ["ROBOFLOW_API_KEY"])
+project = rf.workspace("perception-models").project("tata_ace_exterior")
+version = project.version(2)
+dataset = version.download("yolov8")
+
+# Load YOLOv8 model
+model = YOLO("yolov8n.pt")
+
+# Train the model
+model.train(
+    data=dataset.location + "/data.yaml",
+    epochs=2,
+    imgsz=320,
+    batch=2,
+    workers=0
+)
+
+# Upload trained model to S3
+s3 = boto3.client('s3')
+# Get correct path dynamically
+best_model_path = str(model.trainer.save_dir / "weights/best.pt")
+print("Model saved at:", best_model_path)
+s3.upload_file(
+    best_model_path,
+    "yolov8-trained-model",
+    "models/best.pt"
+)
+
+print("Training completed and model uploaded to S3")
+
+# test pipeline
