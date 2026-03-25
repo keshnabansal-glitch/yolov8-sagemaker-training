@@ -43,5 +43,3 @@ jobs:
           name: yolov8-model
           path: runs/**/best.pt
           retention-days: 7
-=======
->>>>>>> 8e4dd943e0971271cc851d45e25270cbd829215e
