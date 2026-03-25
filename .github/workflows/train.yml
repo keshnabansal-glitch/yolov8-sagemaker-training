@@ -37,12 +37,14 @@ jobs:
         run: |
           python train.py
 
-      - name: Debug - List files
+      - name: Debug - Show all files
         if: always()
         run: |
-          echo "Checking for trained model files..."
-          find . -name "best.pt" -type f 2>/dev/null || echo "No best.pt found"
-          ls -la runs/ 2>/dev/null || echo "No runs directory"
+          echo "==== FULL DIRECTORY STRUCTURE ===="
+          find . -type f | grep ".pt" || echo "No .pt files found"
+
+          echo "==== RUNS FOLDER ===="
+          find runs || echo "No runs folder found"
 
       - name: Upload model artifact
         if: always()

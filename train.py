@@ -34,9 +34,15 @@ try:
         epochs=2,
         imgsz=320,
         batch=2,
-        workers=0
+        workers=0,
+        roject="runs",   # force base folder
+    name="train",     # force subfolder
+    exist_ok=True
     )
+
     print("Training completed successfully!")
+    print("Final save directory:", model.trainer.save_dir)
+    
 except Exception as e:
     print(f"Training failed: {e}")
     sys.exit(1)
