@@ -1,5 +1,0 @@
-roboflow
-ultralytics
-boto3
-torch
-opencv-python
