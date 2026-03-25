@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.9"
 
@@ -37,9 +37,17 @@ jobs:
         run: |
           python train.py
 
+      - name: Debug - List files
+        if: always()
+        run: |
+          echo "Checking for trained model files..."
+          find . -name "best.pt" -type f 2>/dev/null || echo "No best.pt found"
+          ls -la runs/ 2>/dev/null || echo "No runs directory"
+
       - name: Upload model artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: yolov8-model
-          path: runs/**/weights/best.pt 
+          path: runs/**/best.pt
           retention-days: 7
