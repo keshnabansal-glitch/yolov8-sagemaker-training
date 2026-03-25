@@ -51,5 +51,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: yolov8-model
-          path: runs/**/weights/best.pt
+          path: runs/detect/train/weights/best.
           retention-days: 7
