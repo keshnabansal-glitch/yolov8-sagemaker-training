@@ -28,7 +28,7 @@ print("Loading YOLOv8 model...")
 model = YOLO("yolov8n.pt")
 
 # -------------------------------
-# Train model (FIXED BUG HERE)
+# Train model
 # -------------------------------
 print("Training model...")
 
@@ -39,7 +39,7 @@ try:
         imgsz=320,
         batch=2,
         workers=0,
-        project="runs",     # IMPORTANT FIX
+        project="runs",
         name="train"
     )
 except Exception as e:
@@ -55,6 +55,14 @@ print("Model saved at:", best_model_path)
 if not os.path.exists(best_model_path):
     print("ERROR: best.pt not found!")
     sys.exit(1)
+
+# -------------------------------
+# Save path for GitHub Actions
+# -------------------------------
+with open("model_path.txt", "w") as f:
+    f.write(best_model_path)
+
+print("Saved model path to model_path.txt")
 
 # -------------------------------
 # Upload to S3

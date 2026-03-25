@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write   # REQUIRED to push model back to repo
+  contents: write
 
 jobs:
   train-model:
@@ -38,17 +38,27 @@ jobs:
         run: |
           python train.py
 
+      - name: Debug - Show model path file
+        run: |
+          echo "Contents of model_path.txt:"
+          cat model_path.txt || echo "model_path.txt not found"
+
       - name: Commit and push trained model to GitHub
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
 
-          MODEL_PATH=$(find . -name "best.pt" | head -n 1)
+          if [ ! -f model_path.txt ]; then
+            echo "ERROR: model_path.txt not found"
+            exit 1
+          fi
 
-          echo "Model found at: $MODEL_PATH"
+          MODEL_PATH=$(cat model_path.txt)
 
-          if [ -z "$MODEL_PATH" ]; then
-            echo "ERROR: best.pt not found"
+          echo "Model path from Python: $MODEL_PATH"
+
+          if [ ! -f "$MODEL_PATH" ]; then
+            echo "ERROR: best.pt not found at $MODEL_PATH"
             exit 1
           fi
 
@@ -56,6 +66,6 @@ jobs:
           cp "$MODEL_PATH" model/best.pt
 
           git add model/best.pt
-          git commit -m "Auto-update trained model" || echo "No changes to commit"
+          git commit -m "Auto-update trained model" || echo "No changes"
 
           git push
